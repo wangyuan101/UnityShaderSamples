@@ -1,0 +1,50 @@
+# Unity 自动生成的文件
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# Unity 项目设置和缓存
+/ProjectSettings/ProjectVersion.txt 
+/ProjectSettings/EditorBuildSettings.asset 
+*.csproj
+*.sln
+*.suo
+*.userprefs
+
+# Asset Store 和插件缓存
+/Assets/AssetStoreTools*
+/Assets/Plugins/Editor/*
+
+# 自动生成的 Visual Studio/MonoDevelop 文件
+ExportedObj/
+.consulo/
+*.unityproj
+*.booproj
+
+# macOS 系统文件
+.DS_Store
+*.DS_Store
+
+# 日志和崩溃报告
+/[Mm]emoryCaptures/
+/[Pp]ackages/
+/[Pp]ackages-lock.json 
+
+# 其他临时文件
+*.pidb
+*.pdb
+*.opendb
+*.VC.db 
+
+# 自动保存的文件
+*.autosave
+
+# 不需要版本控制的超大文件（如视频、原始模型等）
+/*.mp4
+/*.fbx
+/*.blend
+/*.psd
