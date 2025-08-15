@@ -48,3 +48,5 @@ ExportedObj/
 /*.fbx
 /*.blend
 /*.psd
+
+.vs
