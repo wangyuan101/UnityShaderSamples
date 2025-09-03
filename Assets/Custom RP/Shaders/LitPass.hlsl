@@ -4,7 +4,16 @@
 #include "../ShaderLibrary/Common.hlsl"
 #include "../ShaderLibrary/Surface.hlsl"
 #include "../ShaderLibrary/Light.hlsl"
+#include "../ShaderLibrary/BRDF.hlsl"
 #include "../ShaderLibrary/Lighting.hlsl"
+
+
+#define MIN_REFLECTIVITY 0.04
+
+float OneMinusReflectivity (float metallic) {
+	float range = 1.0 - MIN_REFLECTIVITY;
+	return range - metallic * range;
+}
 
 //CBUFFER_START(UnityPerMaterial)
 //	float4 _BaseColor;
@@ -17,6 +26,8 @@ UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
 	UNITY_DEFINE_INSTANCED_PROP(float4, _BaseMap_ST)
 	UNITY_DEFINE_INSTANCED_PROP(float4, _BaseColor)
 	UNITY_DEFINE_INSTANCED_PROP(float, _Cutoff)
+	UNITY_DEFINE_INSTANCED_PROP(float, _Metallic)
+	UNITY_DEFINE_INSTANCED_PROP(float, _Smoothness)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 struct Attributes {
@@ -60,9 +71,16 @@ float4 LitPassFragment (Varyings input) : SV_TARGET {
 	surface.normal = normalize(input.normalWS);
 	surface.color = base.rgb;
 	surface.alpha = base.a;
+	surface.metallic = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Metallic);
+	surface.smoothness = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Smoothness);
 
-	float3 color = GetLighting(surface);
+	BRDF brdf = GetBRDF(surface);
+	float oneMinusReflectivity = OneMinusReflectivity(surface.metallic);
+	brdf.diffuse = surface.color * oneMinusReflectivity;
+	brdf.specular = lerp(MIN_REFLECTIVITY, surface.color, surface.metallic);
+	float3 color = GetLighting(surface, brdf);
 	return float4(color, surface.alpha);
 }
+
 
 #endif

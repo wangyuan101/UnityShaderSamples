@@ -34,7 +34,7 @@ public partial class CameraRenderer
         }
 
         Setup();
-        lighting.Setup(context);
+        lighting.Setup(context, cullingResults);
         DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
         DrawUnsupportedShaders();
         DrawGizmos();
