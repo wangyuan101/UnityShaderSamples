@@ -3,6 +3,8 @@
 
 #include "../ShaderLibrary/Common.hlsl"
 #include "../ShaderLibrary/Surface.hlsl"
+#include "../ShaderLibrary/Light.hlsl"
+#include "../ShaderLibrary/Lighting.hlsl"
 
 //CBUFFER_START(UnityPerMaterial)
 //	float4 _BaseColor;
@@ -53,9 +55,14 @@ float4 LitPassFragment (Varyings input) : SV_TARGET {
 	#if defined(_CLIPPING)
 		clip(base.a - UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Cutoff));
 	#endif
-	base.rgb = input.normalWS;
 
-	return base;
+	Surface surface;
+	surface.normal = normalize(input.normalWS);
+	surface.color = base.rgb;
+	surface.alpha = base.a;
+
+	float3 color = GetLighting(surface);
+	return float4(color, surface.alpha);
 }
 
 #endif
