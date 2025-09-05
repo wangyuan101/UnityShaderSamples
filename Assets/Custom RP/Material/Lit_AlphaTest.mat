@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Transparent
+  m_Name: Lit_AlphaTest
   m_Shader: {fileID: 4800000, guid: dad9f749e9834974aa7bce711b8413b8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
