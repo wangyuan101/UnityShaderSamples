@@ -8,7 +8,7 @@ struct ShadowedDirectionalLight
 
 public class Shadows
 {
-    const int maxShadowedDirectionalLightCount = 1;
+    const int maxShadowedDirectionalLightCount = 4;
 
     const string bufferName = "Shadows";
 
@@ -31,9 +31,9 @@ public class Shadows
 
     public void ReserveDirectionalShadows(Light light, int visibleLightIndex)
     {
-        if (ShadowedDirectionalLightCount < maxShadowedDirectionalLightCount && 
-            light.shadows != LightShadows.None && 
-            light.shadowStrength > 0f && 
+        if (ShadowedDirectionalLightCount < maxShadowedDirectionalLightCount &&
+            light.shadows != LightShadows.None &&
+            light.shadowStrength > 0f &&
             cullingResults.GetShadowCasterBounds(visibleLightIndex, out Bounds b))
         {
             ShadowedDirectionalLights[ShadowedDirectionalLightCount++] =
@@ -81,16 +81,19 @@ public class Shadows
         buffer.BeginSample(bufferName);
         ExecuteBuffer();
 
+        int split = ShadowedDirectionalLightCount <= 1 ? 1 : 2;
+        int tileSize = atlasSize / split;
+
         for (int i = 0; i < ShadowedDirectionalLightCount; i++)
         {
-            RenderDirectionalShadows(i, atlasSize);
+            RenderDirectionalShadows(i, split, atlasSize);
         }
 
         buffer.EndSample(bufferName);
         ExecuteBuffer();
     }
 
-    void RenderDirectionalShadows(int index, int tileSize)
+    void RenderDirectionalShadows(int index, int split, int tileSize)
     {
         ShadowedDirectionalLight light = ShadowedDirectionalLights[index];
         var shadowSettings = new ShadowDrawingSettings(cullingResults, light.visibleLightIndex, BatchCullingProjectionType.Orthographic);
@@ -100,9 +103,16 @@ public class Shadows
                 out ShadowSplitData splitData
             );
         shadowSettings.splitData = splitData;
+        SetTileViewport(index, split, tileSize);
         buffer.SetViewProjectionMatrices(viewMatrix, projectionMatrix);
         ExecuteBuffer();
         context.DrawShadows(ref shadowSettings);
+    }
+
+    void SetTileViewport(int index, int split, float tileSize)
+    {
+        Vector2 offset = new Vector2(index % split, index / split);
+        buffer.SetViewport(new Rect(offset.x * tileSize, offset.y * tileSize, tileSize, tileSize));
     }
 
     public void Cleanup()
