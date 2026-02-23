@@ -50,11 +50,13 @@ Material:
     - _Power: 5
     - _ReflectIntensity: 2
     - _RimBias: 0
+    - _RimPower: 5
     - _RimScale: 1
     - _Scale: 0.91
     - _UVDistort: 0.09
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0, g: 1.362239, b: 5.092718, a: 0}
+    - _InsideColor: {r: 0.37450987, g: 0, b: 0.16938421, a: 0}
+    - _RimColor: {r: 2.0024729, g: 0, b: 2.9960785, a: 0}
     - _TillingAndOffset: {r: 0.7, g: 0.7, b: 0.42, a: 0.4}
   m_BuildTextureStacks: []
