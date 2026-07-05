@@ -13,6 +13,7 @@
 *.csproj
 *.sln
 *.suo
+*.user
 *.userprefs
 
 # Asset Store 和插件缓存
@@ -21,6 +22,7 @@
 
 # 自动生成的 Visual Studio/MonoDevelop 文件
 ExportedObj/
+.idea/
 .consulo/
 *.unityproj
 *.booproj
